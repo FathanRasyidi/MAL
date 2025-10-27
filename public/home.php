@@ -1,37 +1,19 @@
 <?php
 session_start();
 include '../app/db.php';
+include '../app/anime_manager.php';
+include '../app/auth_manager.php';
 $user_type = empty($_SESSION['usertype']) ? '' : $_SESSION['usertype'];
-$user_id = empty($_SESSION['id_user']) ? '' : $_SESSION['id_user'];
+$profile_target = $user_type === 'admin' ? 'admin/dashboard.php' : '';
+$user_id = empty($_SESSION['id_user']) ? 0 : (int)$_SESSION['id_user'];
 
-if (empty($_COOKIE['email']) && !isset($_SESSION['login'])) {
-    header("location:login.php?pesan=belum_login");
-    exit();
-}
+ensure_logged_in();
 
-// Query untuk mendapatkan semua anime
-$sql_anime = "SELECT * FROM anime ORDER BY id DESC";
-$result_anime = mysqli_query($connect, $sql_anime);
+$result_anime = get_all_anime($connect);
+$total_anime = count_anime($connect);
+$total_my_list = count_user_list($connect, $user_id);
+$total_completed = count_completed($connect, $user_id);
 
-// Query untuk statistik
-$sql_total_anime = "SELECT COUNT(*) as total FROM anime";
-$result_total = mysqli_query($connect, $sql_total_anime);
-$total_anime = mysqli_fetch_array($result_total)['total'];
-
-// Query untuk anime di list user
-$sql_my_list = "SELECT COUNT(*) as total FROM user_anime_list WHERE user_id = '$user_id'";
-$result_my_list = mysqli_query($connect, $sql_my_list);
-$total_my_list = mysqli_fetch_array($result_my_list)['total'];
-
-// Query untuk completed anime
-$sql_completed = "SELECT COUNT(*) as total FROM user_anime_list WHERE user_id = '$user_id' AND status = 'Completed'";
-$result_completed = mysqli_query($connect, $sql_completed);
-$total_completed = mysqli_fetch_array($result_completed)['total'];
-
-// Query untuk total article count
-$sql_articles = "SELECT COUNT(*) as total FROM anime";
-$result_articles = mysqli_query($connect, $sql_articles);
-$total_articles = mysqli_fetch_array($result_articles)['total'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,12 +28,7 @@ $total_articles = mysqli_fetch_array($result_articles)['total'];
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         body {
-            background-color: #f5f5f5;
-        }
-
-        .fixed-sidebar {
-            position: fixed;
-            z-index: 1;
+            background-color: #f3f4f6;
         }
 
         .anime-card {
@@ -68,7 +45,7 @@ $total_articles = mysqli_fetch_array($result_articles)['total'];
             width: 100%;
             height: 280px;
             object-fit: cover;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: whitesmoke;
         }
 
         .stat-card {
@@ -94,25 +71,36 @@ $total_articles = mysqli_fetch_array($result_articles)['total'];
 <body>
     <?php include 'navbar.php'; ?>
     
-    <div class="ml-64 min-h-screen">
+    <main class="ml-64 min-h-screen bg-gray-50">
         <!-- Header -->
-        <div class="p-6 flex justify-between items-center">
-                <h1 class="text-3xl font-bold text-gray-800">My Anime List</h1>
-                <a class="navbar-brand flex items-center my-2 bg-white px-4 py-2 rounded-lg shadow">
-                    <img src="../assets/images/suisei.png" alt="Profile" width="45" height="45" class="rounded-full border-2"
+        <header class="p-6 flex justify-between items-center">
+                <h1 class="text-3xl font-bold text-gray-800">Home</h1>
+                <?php if ($profile_target): ?>
+                <a href="<?php echo $profile_target; ?>" class="flex items-center my-2 bg-white px-4 py-2 rounded-lg shadow hover:shadow-md transition">
+                    <img src="../assets/images/user.jpeg" alt="Profile" width="45" height="45" class="rounded-full border-2"
                         id="logo" style="margin-right: 10px; border-color: #2563eb;">
                     <div class="flex flex-col">
                         <span class="font-semibold text-gray-800"><?php echo isset($_SESSION['login']) ? $_SESSION['login'] : 'Guest'; ?></span>
                         <span class="text-xs text-gray-500"><?php echo ucfirst($user_type); ?></span>
                     </div>
                 </a>
-            </div>
+                <?php else: ?>
+                <div class="flex items-center my-2 bg-white px-4 py-2 rounded-lg shadow">
+                    <img src="../assets/images/suisei.png" alt="Profile" width="45" height="45" class="rounded-full border-2"
+                        id="logo" style="margin-right: 10px; border-color: #2563eb;">
+                    <div class="flex flex-col">
+                        <span class="font-semibold text-gray-800"><?php echo isset($_SESSION['login']) ? $_SESSION['login'] : 'Guest'; ?></span>
+                        <span class="text-xs text-gray-500"><?php echo ucfirst($user_type); ?></span>
+                    </div>
+                </div>
+                <?php endif; ?>
+        </header>
 
             <!-- Statistics Cards -->
-            <div class="px-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <section class="px-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <!-- Total Anime -->
-                <div class="stat-card bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
+                <div class="stat-card bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-xl border border-blue-300 p-6 text-white">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm opacity-90">Total Anime</p>
@@ -125,7 +113,7 @@ $total_articles = mysqli_fetch_array($result_articles)['total'];
                 </div>
 
                 <!-- My List -->
-                <div class="stat-card bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+                <div class="stat-card bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-xl border border-purple-300 p-6 text-white">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm opacity-90">My List</p>
@@ -138,7 +126,7 @@ $total_articles = mysqli_fetch_array($result_articles)['total'];
                 </div>
 
                 <!-- Completed -->
-                <div class="stat-card bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+                <div class="stat-card bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-xl border border-green-300 p-6 text-white">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm opacity-90">Completed</p>
@@ -149,24 +137,11 @@ $total_articles = mysqli_fetch_array($result_articles)['total'];
                         </svg>
                     </div>
                 </div>
-
-                <!-- Total Articles -->
-                <div class="stat-card bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-lg p-6 text-white">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <p class="text-sm opacity-90">Total Articles</p>
-                            <p class="text-3xl font-bold mt-1"><?php echo $total_articles; ?></p>
-                        </div>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
                 </div>
-                </div>
-            </div>
+            </section>
 
-                <!-- Anime List Section -->
-                <div class="bg-white rounded-xl shadow-lg p-6 mx-6">
+            <!-- Anime List Section -->
+            <section class="bg-white border border-gray-200 rounded-xl shadow-xl p-6 mx-6 mb-10">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold text-gray-800">All Anime</h2>
                     <?php if ($user_type == 'admin' || $user_type == 'editor'): ?>
@@ -183,7 +158,7 @@ $total_articles = mysqli_fetch_array($result_articles)['total'];
                         while ($anime = mysqli_fetch_assoc($result_anime)) {
                             $genres = explode(',', $anime['genre']);
                     ?>
-                        <div class="anime-card bg-white rounded-lg overflow-hidden shadow-md">
+                        <div class="anime-card bg-white border border-gray-200 rounded-lg overflow-hidden shadow-xl" onclick="window.location.href='article.php?id=<?php echo $anime['id']; ?>';" onkeypress="if(event.key==='Enter' || event.key===' '){event.preventDefault();window.location.href='article.php?id=<?php echo $anime['id']; ?>';}" role="link" tabindex="0" aria-label="Lihat detail <?php echo htmlspecialchars($anime['title']); ?>">
                             <div class="relative">
                                 <?php if (!empty($anime['image'])): ?>
                                     <img src="image.php?id=<?php echo $anime['id']; ?>" 
@@ -233,20 +208,6 @@ $total_articles = mysqli_fetch_array($result_articles)['total'];
                                     <?php echo htmlspecialchars(substr($anime['synopsis'], 0, 80)) . '...'; ?>
                                 </p>
                                 <?php endif; ?>
-
-                                <!-- Actions -->
-                                <div class="flex gap-2">
-                                    <a href="article.php?id=<?php echo $anime['id']; ?>" class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-600 text-center py-2 rounded text-sm font-medium transition">
-                                        View Details
-                                    </a>
-                                    <?php if ($user_type == 'admin' || $user_type == 'editor'): ?>
-                                    <a href="article.php?id=<?php echo $anime['id']; ?>&edit=true" class="bg-yellow-50 hover:bg-yellow-100 text-yellow-600 px-3 py-2 rounded text-sm transition">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                        </svg>
-                                    </a>
-                                    <?php endif; ?>
-                                </div>
                             </div>
                         </div>
                     <?php 
@@ -266,10 +227,8 @@ $total_articles = mysqli_fetch_array($result_articles)['total'];
                         </div>
                     <?php } ?>
                 </div>
-                </div>
-            </div>
-        </div>
-
+            </section>
+    </main>
 </body>
 
 </html>
