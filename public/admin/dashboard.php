@@ -111,7 +111,7 @@ $nav_items = [
 			<div class="bg-white border border-gray-200 rounded-xl shadow-xl p-6">
 				<h2 class="text-2xl font-semibold text-gray-800 mb-3">Catatan Admin</h2>
 				<p class="text-gray-700 leading-relaxed">
-					Gunakan halaman ini sebagai pusat kontrol untuk memantau aktivitas komunitas. Pastikan untuk meninjau komentar secara berkala dan menjaga roles pengguna agar fitur tetap aman.
+					Gunakan halaman ini sebagai pusat kontrol untuk memantau aktivitas komunitas.
 				</p>
 			</div>
 		</section>

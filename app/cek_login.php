@@ -22,9 +22,6 @@ if ($cek > 0) {
     $_SESSION['login'] = $login;
     $_SESSION['usertype'] = $type;
     $_SESSION['email'] = $email;
-    if (isset($_POST['kuki'])) {
-        setcookie('email', $email, time() + 60 * 60 * 24);
-    }
     header("location:/mal/public/home.php");
     exit();
 } else {

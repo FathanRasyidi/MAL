@@ -113,7 +113,7 @@ $total_completed = count_completed($connect, $user_id);
                 </div>
 
                 <!-- My List -->
-                <div class="stat-card bg-gradient-to-br from-red-500 to-red-600 rounded-xl shadow-xl border border-red-300 p-6 text-white">
+                <div class="stat-card bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-xl border border-purple-300 p-6 text-white">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm opacity-90">My List</p>

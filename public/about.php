@@ -39,9 +39,6 @@ $user_type = $_SESSION['usertype'] ?? 'user';
 					<p class="text-gray-700 leading-relaxed mb-3">
 						Seorang penggemar anime dan pengembang web yang senang meramu ide kreatif menjadi produk digital yang rapih. Dashboard ini saya bangun sebagai wadah pribadi untuk mendokumentasikan judul favorit, berbagi opini, dan menjaga daftar tontonan tetap teratur.
 					</p>
-					<p class="text-gray-700 leading-relaxed">
-						Di luar layar monitor, saya menikmati membaca manga terbaru, berdiskusi tentang teori cerita, dan mencoba teknologi front-end yang membuat pengalaman pengguna lebih menyenangkan.
-					</p>
 				</div>
 			</div>
 
@@ -56,7 +53,7 @@ $user_type = $_SESSION['usertype'] ?? 'user';
 				</div>
 				<div class="bg-white border border-gray-200 rounded-xl shadow-xl p-6">
 					<h3 class="text-xl font-semibold text-gray-800 mb-2">Kesukaan di Waktu Luang</h3>
-					<p class="text-gray-600">Mengulas episode terbaru, menulis catatan singkat mengenai karakter favorit, dan mengeksplorasi API anime sebagai bahan eksperimen.</p>
+					<p class="text-gray-600">Mengulas episode terbaru, eksperimen dengan bahasa pemrograman, dan mengeksplorasi anime.</p>
 				</div>
 			</div>
 
@@ -91,8 +88,9 @@ $user_type = $_SESSION['usertype'] ?? 'user';
 				<h2 class="text-2xl font-semibold text-gray-800 mb-3">Mari Terhubung</h2>
 				<p class="text-gray-700 mb-4">Punya saran fitur atau ingin berkolaborasi? Jangan ragu untuk mengirim pesan. Saya senang berdiskusi seputar anime maupun pengembangan web.</p>
 				<div class="flex flex-wrap gap-4">
-					<a href="article.php?id=0" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium">Add New Anime</a>
-					<a href="mylist.php" class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-3 rounded-lg font-medium">View My List</a>
+					<a href="https://www.linkedin.com/in/fathanras/" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium flex items-center gap-2">
+						Connect on LinkedIn
+					</a>
 				</div>
 			</div>
 		</section>
