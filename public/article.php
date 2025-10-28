@@ -132,7 +132,7 @@ if ($anime_id > 0 && isset($_GET['delete_comment'])) {
                 </a>
                 <?php else: ?>
                 <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-lg shadow">
-                    <img src="../assets/images/suisei.png" alt="Profile" width="45" height="45" class="rounded-full border-2" style="border-color: #2563eb;">
+                    <img src="../assets/images/user.jpeg" alt="Profile" width="45" height="45" class="rounded-full border-2" style="border-color: #2563eb;">
                     <div>
                         <p class="font-semibold text-gray-800 mb-0"><?php echo htmlspecialchars($_SESSION['login'] ?? 'User'); ?></p>
                         <p class="text-xs text-gray-500 mb-0"><?php echo ucfirst($user_type); ?></p>
@@ -226,7 +226,7 @@ if ($anime_id > 0 && isset($_GET['delete_comment'])) {
 
                                 <?php if ($user_type == 'admin' || $user_type == 'editor'): ?>
                                 <div class="mt-4 pt-4 border-t">
-                                    <h4 class="font-bold mb-3">Admin Actions</h4>
+                                    <h4 class="font-bold mb-3">Actions</h4>
                                     <a href="?id=<?php echo $anime_id; ?>&edit=true" class="block w-full text-center bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded-lg font-medium mb-2">Edit Anime</a>
                                     <a href="?id=<?php echo $anime_id; ?>&delete=1" onclick="return confirm('Delete this anime?')" class="block w-full text-center bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-medium">Delete Anime</a>
                                 </div>

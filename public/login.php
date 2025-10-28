@@ -67,10 +67,10 @@ if (isset($_COOKIE['user'])) {
                             <input type="password" id="password" name="password"
                                 class="appearance-none border-2 border-gray-100 rounded-lg px-4 py-3 placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:shadow-lg" />
                         </div>
-                        <div class="mb-3 form-check">
+                        <!-- <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="kuki" name="kuki">
                             <label class="form-check-label" for="kuki" style="color: #2563eb">Remember me</label>
-                        </div>
+                        </div> -->
                         <div id="button" class="flex flex-col w-full my-5">
                             <button type="submit" class="w-full py-4 bg-blue-600 rounded-lg text-white hover:bg-blue-700">
                                 <div class="flex flex-row items-center justify-center">

@@ -86,7 +86,7 @@ $total_completed = count_completed($connect, $user_id);
                 </a>
                 <?php else: ?>
                 <div class="flex items-center my-2 bg-white px-4 py-2 rounded-lg shadow">
-                    <img src="../assets/images/suisei.png" alt="Profile" width="45" height="45" class="rounded-full border-2"
+                    <img src="../assets/images/user.jpeg" alt="Profile" width="45" height="45" class="rounded-full border-2"
                         id="logo" style="margin-right: 10px; border-color: #2563eb;">
                     <div class="flex flex-col">
                         <span class="font-semibold text-gray-800"><?php echo isset($_SESSION['login']) ? $_SESSION['login'] : 'Guest'; ?></span>
@@ -113,7 +113,7 @@ $total_completed = count_completed($connect, $user_id);
                 </div>
 
                 <!-- My List -->
-                <div class="stat-card bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-xl border border-purple-300 p-6 text-white">
+                <div class="stat-card bg-gradient-to-br from-red-500 to-red-600 rounded-xl shadow-xl border border-red-300 p-6 text-white">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-sm opacity-90">My List</p>
