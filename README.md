@@ -17,7 +17,6 @@ A simple anime list management system with user authentication, personal lists, 
 - 🔐 **User Authentication** - Secure login and registration system
 - 📝 **Anime Management** - Add, edit, and delete anime entries (Admin/Editor)
 - 📚 **Personal Lists** - Track your anime progress (Watching, Completed, Plan to Watch, Dropped)
-- ⭐ **Rating System** - Rate anime from 1 to 10
 - 💬 **Comments** - Discuss anime with the community
 - 🖼️ **Image Storage** - Upload and store anime cover images directly in database
 
@@ -36,28 +35,6 @@ A simple anime list management system with user authentication, personal lists, 
 | Admin | admin@anime.com | 123 |
 | Editor | editor@anime.com | 123 |
 | User | user@anime.com | 123 |
-
-## 📖 Usage
-
-### For Regular Users
-
-1. **Browse Anime** - View all available anime on the home page
-2. **View Details** - Click on any anime to see full information
-3. **Add to List** - Choose status (Watching/Completed/etc.) and rate the anime
-4. **Comment** - Share your thoughts on anime detail pages
-
-### For Editors/Admins
-
-1. **Add New Anime** - Upload cover image, add title, synopsis, and genres
-2. **Edit Anime** - Update existing anime information
-3. **Delete Anime** - Remove anime from the database
-
-## 🛠️ Built With
-
-- **Backend:** PHP (Native)
-- **Database:** MySQL/MariaDB
-- **Frontend:** TailwindCSS, Alpine.js
-- **Authentication:** PHP Sessions & Cookies
 
 ## 📝 License
 
